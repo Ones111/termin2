@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>WP Exam</title>
+</head>
+<body>
+<!-- The form should submit to DiscussionController.create or DiscussionController.update,
+     depending on whether we are creating or editing an entity -->
+<form th:action="@{'/discussions/{id}' (id=${discussion?.getId()})}" th:method="POST">
+    <div>
+        <label for="f1">Title</label>
+        <input type="text"
+               id="f1"
+               name="title"
+               th:value="${discussion?.getTitle()}"
+               required>
+    </div>
+    <div>
+        <label for="f2">Description</label>
+        <input type="text"
+               id="f2"
+               name="description"
+               th:value="${discussion?.getDescription()}"
+               required>
+    </div>
+    <div>
+        <label for="f6">Due Date</label>
+        <input type="date"
+               id="f6"
+               name="dueDate"
+               th:value="${discussion?.getDueDate()}"
+               required>
+    </div>
+    <div>
+        <label>Tag</label><br/>
+        <select id="f4" name="discussionTag">
+            <!-- For each tag you should have one <option> like below  -->
+            <option th:each="tag:${tags}"
+                    th:text="${tag.name()}"
+                    th:value="${tag}"
+                    th:selected="${discussion!=null ? discussion.getTag().toString().equals(tag.toString()):null}"> [tag_name]</option>
+        </select>
+    </div>
+    <div>
+        <label>Participants</label><br/>
+        <select id="f5" name="participants" multiple>
+            <!-- For each participant you should have one <option> like below  -->
+            <option th:each="user:${users}"
+                    th:value="${user.getId()}"
+                    th:selected="${discussion != null ? discussion.getParticipants().contains(user):null}"
+                    th:text="${user.getUsername()}"
+            > [participant.username]</option>
+        </select>
+    </div>
+
+    <button id="submit" type="submit">Submit</button>
+    <a id="back" href="/discussions" type="button" class="btn btn-primary">Back to discussions</a>
+</form>
+
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+        <input type="hidden" id="f3" value="f3" required>
+    </ul>
+</div>
+
+</body>
+</html>
